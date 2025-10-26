@@ -215,11 +215,6 @@ option(LLVM_INCLUDE_TESTS "Generate build targets for the runtimes unit tests." 
 option(LLVM_INCLUDE_DOCS "Generate build targets for the runtimes documentation." ON)
 option(LLVM_ENABLE_SPHINX "Use Sphinx to generate the runtimes documentation." OFF)
 
-# Use libtool instead of ar if you are both on an Apple host, and targeting Apple.
-if(CMAKE_HOST_APPLE AND APPLE)
-  include(UseLibtool)
-endif()
-
 # This can be used to detect whether we're in the runtimes build.
 set(LLVM_RUNTIMES_BUILD ON)
 

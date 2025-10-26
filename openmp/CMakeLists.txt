@@ -9,10 +9,18 @@ list(INSERT CMAKE_MODULE_PATH 0
   "${LLVM_COMMON_CMAKE_UTILS}/Modules"
   )
 
+project(openmp C CXX ASM)
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
+set(CMAKE_CXX_STANDARD_REQUIRED NO)
+set(CMAKE_CXX_EXTENSIONS NO)
+
+set(CMAKE_C_STANDARD 11 CACHE STRING "C standard to conform to")
+set(CMAKE_C_STANDARD_REQUIRED NO)
+set(CMAKE_C_EXTENSIONS NO)
+
 # llvm/runtimes/ will set OPENMP_STANDALONE_BUILD.
 if (OPENMP_STANDALONE_BUILD OR "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
   set(OPENMP_STANDALONE_BUILD TRUE)
-  project(openmp C CXX ASM)
 else()
   set(OPENMP_STANDALONE_BUILD FALSE)
 endif()
@@ -44,9 +52,6 @@ if (OPENMP_STANDALONE_BUILD)
     "FORTRAN compiler to use for testing OpenMP runtime libraries.")
   set(OPENMP_LLVM_TOOLS_DIR "" CACHE PATH "Path to LLVM tools for testing.")
 
-  set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
-  set(CMAKE_CXX_STANDARD_REQUIRED NO)
-  set(CMAKE_CXX_EXTENSIONS NO)
 else()
   set(OPENMP_ENABLE_WERROR ${LLVM_ENABLE_WERROR})
 
@@ -145,6 +150,26 @@ if(NOT ${OPENMP_STANDALONE_BUILD})
 endif()
 
 option(OPENMP_MSVC_NAME_SCHEME "Build dll with MSVC naming scheme." OFF)
+
+string(REPLACE "-fvisibility-inlines-hidden" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE "-fvisibility-inlines-hidden" "" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+string(REPLACE "-fvisibility=hidden" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE "-fvisibility=hidden" "" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+string(REPLACE "-fno-semantic-interposition" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE "-fno-semantic-interposition" "" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+
+string(REPLACE "-fvisibility-inlines-hidden" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+string(REPLACE "-fvisibility-inlines-hidden" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+string(REPLACE "-fvisibility=hidden" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+string(REPLACE "-fvisibility=hidden" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+string(REPLACE "-fno-semantic-interposition" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+string(REPLACE "-fno-semantic-interposition" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+
+if (APPLE)
+  string(REPLACE "-Wl,-headerpad_max_install_names" "" CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+  string(REPLACE "-Wl,-headerpad_max_install_names" "-Wl,-undefined -Wl,dynamic_lookup" CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+  string(REPLACE "-Wl,-headerpad_max_install_names" "-Wl,-undefined -Wl,dynamic_lookup" CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}")
+endif()
 
 # Build libompd.so
 add_subdirectory(libompd)

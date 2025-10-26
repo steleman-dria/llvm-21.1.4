@@ -78,6 +78,10 @@ set(CMAKE_CXX_STANDARD ${LLVM_REQUIRED_CXX_STANDARD} CACHE STRING "C++ standard 
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED YES)
+set(CMAKE_C_EXTENSIONS NO)
+
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(FATAL_ERROR "
 No build type selected. You need to pass -DCMAKE_BUILD_TYPE=<type> in order to configure LLVM.
@@ -90,11 +94,19 @@ Learn more about these options in our documentation at https://llvm.org/docs/CMa
 ")
 endif()
 
+if (APPLE)
+  add_definitions("-D_DARWIN_C_SOURCE")
+endif()
+
+if (LINUX)
+  add_definitions("-D_GNU_SOURCE -D_XOPEN_SOURCE=700")
+endif()
+
 # Set default build type for cmake's try_compile module.
 # CMake 3.17 or newer sets CMAKE_DEFAULT_BUILD_TYPE to one of the
 # items from CMAKE_CONFIGURATION_TYPES. Logic below can be further
 # simplified once LLVM's minimum CMake version is updated to 3.17.
-if(CMAKE_DEFAULT_BUILD_TYPE)
+if (CMAKE_DEFAULT_BUILD_TYPE AND ${CMAKE_BUILD_TYPE} STREQUAL "")
   set(CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_DEFAULT_BUILD_TYPE})
 else()
   if(CMAKE_CONFIGURATION_TYPES)
@@ -103,6 +115,9 @@ else()
     set(CMAKE_TRY_COMPILE_CONFIGURATION ${CMAKE_BUILD_TYPE})
   endif()
 endif()
+
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_DEFAULT_BUILD_TYPE: ${CMAKE_DEFAULT_BUILD_TYPE}")
 
 # Side-by-side subprojects layout: automatically set the
 # LLVM_EXTERNAL_${project}_SOURCE_DIR using LLVM_ALL_PROJECTS
@@ -996,11 +1011,6 @@ if (LLVM_BUILD_STATIC)
       list(REMOVE_AT CMAKE_FIND_LIBRARY_SUFFIXES ${shared_lib_suffix_idx})
     endif()
   endforeach()
-endif()
-
-# Use libtool instead of ar if you are both on an Apple host, and targeting Apple.
-if(CMAKE_HOST_APPLE AND APPLE)
-  include(UseLibtool)
 endif()
 
 # Override the default target with an environment variable named by LLVM_TARGET_TRIPLE_ENV.

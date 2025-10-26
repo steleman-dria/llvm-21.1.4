@@ -655,13 +655,7 @@ function(add_mlir_public_c_api_library name)
     ADDITIONAL_HEADER_DIRS
     ${MLIR_MAIN_INCLUDE_DIR}/mlir-c
   )
-  # API libraries compile with hidden visibility and macros that enable
-  # exporting from the DLL. Only apply to the obj lib, which only affects
-  # the exports via a shared library.
-  set_target_properties(obj.${name}
-    PROPERTIES
-    CXX_VISIBILITY_PRESET hidden
-  )
+
   target_compile_definitions(obj.${name}
     PRIVATE
     -DMLIR_CAPI_BUILDING_LIBRARY=1

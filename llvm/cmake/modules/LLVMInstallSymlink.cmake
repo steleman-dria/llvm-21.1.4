@@ -4,7 +4,13 @@
 
 # Set to an arbitrary directory to silence GNUInstallDirs warnings
 # regarding being unable to determine libdir.
+
+if (LINUX)
+  set(CMAKE_INSTALL_LIBDIR "lib64")
+else()
 set(CMAKE_INSTALL_LIBDIR "lib")
+endif()
+
 include(GNUInstallDirs)
 
 function(install_symlink name target outdir link_or_copy)
