@@ -1,44 +1,40 @@
-# The LLVM Compiler Infrastructure
+LLVM 21.1.4 on MacOS 15.5 Sequoia
+=================================
 
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/llvm/llvm-project/badge)](https://securityscorecards.dev/viewer/?uri=github.com/llvm/llvm-project)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8273/badge)](https://www.bestpractices.dev/projects/8273)
-[![libc++](https://github.com/llvm/llvm-project/actions/workflows/libcxx-build-and-test.yaml/badge.svg?branch=main&event=schedule)](https://github.com/llvm/llvm-project/actions/workflows/libcxx-build-and-test.yaml?query=event%3Aschedule)
+This is my fork of LLVM 21.1.4 from [https://llvm.org/](https://llvm.org/) on Fedora 41. It builds with MacOS's Apple clang version 17.0.0 (clang-1700.0.13.5).
 
-Welcome to the LLVM project!
+The `main` branch is the canonical release from LLVM upstream, unmodified. The branch `llvm-21.1.4-macos-15.5-sequoia` is the MacOS branch containing my changes.
 
-This repository contains the source code for LLVM, a toolkit for the
-construction of highly optimized compilers, optimizers, and run-time
-environments.
+Build scripts are in the `build-scripts` directory in the `llvm-21.1.4-macos-15.5-sequoia` branch.
 
-The LLVM project has multiple components. The core of the project is
-itself called "LLVM". This contains all of the tools, libraries, and header
-files needed to process intermediate representations and convert them into
-object files. Tools include an assembler, disassembler, bitcode analyzer, and
-bitcode optimizer.
+Build and Install Instructions:
+-------------------------------
 
-C-like languages use the [Clang](https://clang.llvm.org/) frontend. This
-component compiles C, C++, Objective-C, and Objective-C++ code into LLVM bitcode
--- and from there into object files, using LLVM.
+1. Clone this repo.
+2. `%> mkdir build-llvm`
+3. `%> mkdir install-llvm`
+4. `%> cp ./llvm-21.1.4/build-scripts/run-cmake-configure-macos.sh ./build-llvm/`
+5. `%> cp ./llvm-21.1.4/build-scripts/build-llvm-macos.sh ./build-llvm/`
+6. `%> cp ./llvm-21.1.4/build-scripts/install-llvm-macos.sh ./build-llvm/`
+7. `%> cd ./build-llvm`
+8. `%> ./run-cmake-configure-macos.sh`
+9. `%> ./build-llvm-macos.sh`
+10.`%> ./install-llvm-macos.sh`
 
-Other components include:
-the [libc++ C++ standard library](https://libcxx.llvm.org),
-the [LLD linker](https://lld.llvm.org), and more.
+This build of LLVM will install in the `install-llvm` directory created above.
 
-## Getting the Source Code and Building LLVM
+You will need to install a whole bunch of LLVM dependencies from brew:
 
-Consult the
-[Getting Started with LLVM](https://llvm.org/docs/GettingStarted.html#getting-the-source-code-and-building-llvm)
-page for information on building and running LLVM.
+- Python 3.13
+- Python3 nanobind
+- LibXML2
+- Z3 solver
+- CMake
+- GNU Make
+- GNU Toolkits
+- OCaml and Opam - if you want the OCaml bindings.
 
-For information on how to contribute to the LLVM project, please take a look at
-the [Contributing to LLVM](https://llvm.org/docs/Contributing.html) guide.
+The original [README.md](https://github.com/steleman/llvm-21.1.4/blob/main/README.md) file has been renamed to [LLVM.README.md](https://github.com/steleman/llvm-21.1.4/blob/llvm-21.1.4-macos-15.5-sequoia/LLVM.README.md).
 
-## Getting in touch
+I put this clone here because several of my other ports / forks at my Github depend on LLVM 21.1.4.
 
-Join the [LLVM Discourse forums](https://discourse.llvm.org/), [Discord
-chat](https://discord.gg/xS7Z362),
-[LLVM Office Hours](https://llvm.org/docs/GettingInvolved.html#office-hours) or
-[Regular sync-ups](https://llvm.org/docs/GettingInvolved.html#online-sync-ups).
-
-The LLVM project has adopted a [code of conduct](https://llvm.org/docs/CodeOfConduct.html) for
-participants to all modes of communication within the project.
