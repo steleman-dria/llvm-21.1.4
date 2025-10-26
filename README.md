@@ -19,7 +19,7 @@ Build and Install Instructions:
 7. `%> cd ./build-llvm`
 8. `%> ./run-cmake-configure-macos.sh`
 9. `%> ./build-llvm-macos.sh`
-10.`%> ./install-llvm-macos.sh`
+10. `%> ./install-llvm-macos.sh`
 
 This build of LLVM will install in the `install-llvm` directory created above.
 
