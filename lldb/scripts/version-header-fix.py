@@ -22,12 +22,24 @@ def main():
     parser.add_argument(
         "-o", "--output_path", help="The filepath for the output header."
     )
+    parser.add_argument("-d", "--dir_path", help="The output directory filepath.")
     parser.add_argument("-m", "--major", help="The LLDB version major.")
     parser.add_argument("-n", "--minor", help="The LLDB version minor.")
     parser.add_argument("-p", "--patch", help="The LLDB version patch number.")
     args = parser.parse_args()
     input_path = str(args.input_path)
     output_path = str(args.output_path)
+    dir_path = str(args.dir_path)
+
+    try:
+        os.mkdir(dir_path)
+        print(f"Directory '{dir_path}' created successfully.")
+    except FileExistsError:
+        print(f"Directory '{dir_path}' already exists. This is not an error.")
+    except PermissionError:
+        print(f"Permission denied: cannot create {dir_path}. This is a configuration error.")
+    except Exception as e:
+        print(f"Exception: some other error occured. This is an unhandled error.")
 
     with open(input_path, "r") as input_file:
         lines = input_file.readlines()

@@ -34,9 +34,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   if(APPLE)
     include(CompilerRTDarwinUtils)
   endif()
-  if(APPLE)
-    include(UseLibtool)
-  endif()
+
   include(AddCompilerRT)
 
   if(MINGW)

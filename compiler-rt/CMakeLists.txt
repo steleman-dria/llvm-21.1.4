@@ -17,9 +17,10 @@ if(POLICY CMP0128)
   cmake_policy(SET CMP0128 NEW)
 endif()
 
+project(CompilerRT C CXX ASM)
+
 # Check if compiler-rt is built as a standalone project.
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR OR COMPILER_RT_STANDALONE_BUILD)
-  project(CompilerRT C CXX ASM)
   set(COMPILER_RT_STANDALONE_BUILD TRUE)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
@@ -128,11 +129,6 @@ if (COMPILER_RT_STANDALONE_BUILD)
     set_target_properties(Python3::Interpreter PROPERTIES
       IMPORTED_LOCATION ${Python2_EXECUTABLE})
     set(Python3_EXECUTABLE ${Python2_EXECUTABLE})
-  endif()
-
-  # Ensure that fat libraries are built correctly on Darwin
-  if(APPLE)
-    include(UseLibtool)
   endif()
 
   # Define default arguments to lit.
