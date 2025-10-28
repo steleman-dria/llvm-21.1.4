@@ -1,7 +1,7 @@
 LLVM 21.1.4 on MacOS 15.5 Sequoia
 =================================
 
-This is my fork of LLVM 21.1.4 from [https://llvm.org/](https://llvm.org/) on Fedora 41. It builds with MacOS's Apple clang version 17.0.0 (clang-1700.0.13.5).
+This is my fork of LLVM 21.1.4 from [https://llvm.org/](https://llvm.org/) on MacOS 15.5 Sequoia. It builds with MacOS's Apple clang version 17.0.0 (clang-1700.0.13.5).
 
 The `main` branch is the canonical release from LLVM upstream, unmodified. The branch `llvm-21.1.4-macos-15.5-sequoia` is the MacOS branch containing my changes.
 
