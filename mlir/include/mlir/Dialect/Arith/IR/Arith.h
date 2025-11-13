@@ -105,6 +105,10 @@ public:
     return cast<IntegerAttr>(arith::ConstantOp::getValue()).getInt();
   }
 
+  static ConstantIndexOp create(OpBuilder& builder, Location loc, int64_t value);
+
+  static ConstantIndexOp create(ImplicitLocOpBuilder& builder, int64_t value);
+
   static bool classof(Operation *op);
 };
 
