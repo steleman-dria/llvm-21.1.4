@@ -291,6 +291,21 @@ void arith::ConstantIndexOp::build(OpBuilder &builder, OperationState &result,
                            builder.getIndexAttr(value));
 }
 
+arith::ConstantIndexOp
+arith::ConstantIndexOp::create(OpBuilder &builder, Location location,
+                               int64_t value) {
+  mlir::OperationState state(location, getOperationName());
+  build(builder, state, value);
+  auto result = dyn_cast<ConstantIndexOp>(builder.create(state));
+  assert(result && "builder didn't return the right type");
+  return result;
+}
+
+arith::ConstantIndexOp
+arith::ConstantIndexOp::create(ImplicitLocOpBuilder &builder, int64_t value) {
+   return create(builder, builder.getLoc(), value);
+}
+
 bool arith::ConstantIndexOp::classof(Operation *op) {
   if (auto constOp = dyn_cast_or_null<arith::ConstantOp>(op))
     return constOp.getType().isIndex();
